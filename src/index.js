@@ -26,8 +26,13 @@ function scanDirectory(inputDir) {
   return new Promise((resolve, reject) => {
     fs.readdir(inputDir, async (err, files) => {
       if (err) {
-        console.log(`Invalid directory: ${inputDir}`);
+        console.log('Invalid directory:', inputDir);
         reject(err);
+      }
+
+      if (files.length === 0) {
+        console.log('No files found in directory:', inputDir);
+        resolve();
       }
 
       for (const file of files) {
@@ -49,10 +54,12 @@ function scanDirectory(inputDir) {
 
 async function main() {
   const inputDir = process.argv[2];
+
   if (!inputDir) {
     console.log('Please provide an input directory!');
     return;
   }
+
   try {
     console.log('📁 Scanning directory:', inputDir);
     await scanDirectory(inputDir);
